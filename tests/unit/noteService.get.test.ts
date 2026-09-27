@@ -32,14 +32,16 @@ function makeFakeRepo(): NoteRepository {
 }
 
 describe('NoteService.getNote', () => {
+  let repo: NoteRepository;
   let service: NoteServiceImpl;
 
   beforeEach(() => {
-    service = new NoteServiceImpl(makeFakeRepo());
+    repo = makeFakeRepo();
+    service = new NoteServiceImpl(repo);
   });
 
   it('devuelve la nota cuando el id existe', () => {
-    const created = service.createNote({ title: 'Titulo de ejemplo', content: 'Texto de ejemplo' });
+    const created = repo.create({ title: 'Titulo de ejemplo', content: 'Texto de ejemplo' });
     expect(service.getNote(created.id)).toEqual(created);
   });
 
