@@ -1,47 +1,20 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { NoteServiceImpl } from '../../src/services/NoteService';
-import { NoteRepository } from '../../src/repositories/NoteRepository';
-import { Note, NewNote, NotePatch } from '../../src/models/Note';
-
-function makeFakeRepo(): NoteRepository {
-  let notes: Note[] = [];
-  let nextId = 1;
-  return {
-    create(data: NewNote): Note {
-      const now = new Date().toISOString();
-      const note: Note = { id: nextId++, title: data.title, content: data.content,
-        pinned: data.pinned ?? false, createdAt: now, updatedAt: now };
-      notes.push(note);
-      return note;
-    },
-    findAll: () => notes,
-    findById: (id) => notes.find(n => n.id === id),
-    update(id, patch) {
-      const note = notes.find(n => n.id === id);
-      if (!note) return undefined;
-      Object.assign(note, patch, { updatedAt: new Date().toISOString() });
-      return note;
-    },
-    delete(id) {
-      const before = notes.length;
-      notes = notes.filter(n => n.id !== id);
-      return notes.length < before;
-    },
-    clear: () => { notes = []; }
-  };
-}
+import { SqliteNoteRepository } from '../../src/repositories/NoteRepository';
+import { createDb } from '../../src/db/connection';
 
 describe('NoteService.getNote', () => {
-  let repo: NoteRepository;
+  let repo: SqliteNoteRepository;
   let service: NoteServiceImpl;
 
   beforeEach(() => {
-    repo = makeFakeRepo();
+    const db = createDb(':memory:');
+    repo = new SqliteNoteRepository(db);
     service = new NoteServiceImpl(repo);
   });
 
   it('devuelve la nota cuando el id existe', () => {
-    const created = repo.create({ title: 'Titulo de ejemplo', content: 'Texto de ejemplo' });
+    const created = repo.create({ title: 'Comprar pan', content: 'Antes de las 20hs' });
     expect(service.getNote(created.id)).toEqual(created);
   });
 
