@@ -9,8 +9,9 @@ export interface NoteService {
   listNotes(): Note[];
   getNote(id: number): Note | undefined;
   updateNote(id: number, patch: NotePatch): Note | undefined;
-  deleteNote(id: number): boolean;
-}
+  deleteNote(id: number): boolean 
+  }
+
 
 export class NoteServiceImpl implements NoteService {
   constructor(private readonly repo: NoteRepository) {}
@@ -48,6 +49,6 @@ export class NoteServiceImpl implements NoteService {
 
   deleteNote(id: number): boolean {
     // 🔴🟢 EJERCICIO 5: ciclo completo.
-    throw new Error('deleteNote: no implementado (Ejercicio 5)');
+    return this.repo.delete(id);
   }
 }
