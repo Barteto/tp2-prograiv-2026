@@ -13,6 +13,7 @@ export interface NoteService {
   }
 
 
+// 🟢 EJERCICIO 1:
 export class NoteServiceImpl implements NoteService {
   constructor(private readonly repo: NoteRepository) {}
 
@@ -44,8 +45,6 @@ export class NoteServiceImpl implements NoteService {
 
   listNotes(): Note[] {
     // 🟢 EJERCICIO 2: esta función YA FUNCIONA.
-    // No existe todavía el archivo tests/unit/noteService.list.test.ts:
-    // escríbanlo ustedes cubriendo al menos "lista vacía" y "varias notas".
     return this.repo.findAll();
   }
 
