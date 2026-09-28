@@ -9,8 +9,9 @@ export interface NoteService {
   listNotes(): Note[];
   getNote(id: number): Note | undefined;
   updateNote(id: number, patch: NotePatch): Note | undefined;
-  deleteNote(id: number): boolean;
-}
+  deleteNote(id: number): boolean 
+  }
+
 
 export class NoteServiceImpl implements NoteService {
   constructor(private readonly repo: NoteRepository) {}
@@ -20,6 +21,13 @@ export class NoteServiceImpl implements NoteService {
     // Implementen la creación básica: crear la nota en el repositorio y
     // devolverla. Con esto alcanza para que el test de la cátedra pase.
     //
+    const note = this.repo.create(data);
+    if (data.pinned) {
+      notify(note);
+    }
+    return note;
+    
+    
     // 🔴🟢 EJERCICIO 6 (a hacer más adelante, ustedes escriben el test):
     // una vez que este método esté en verde, agréguenle: si `data.pinned`
     // es true, además deben llamar a notify(nota) del módulo
@@ -54,7 +62,7 @@ export class NoteServiceImpl implements NoteService {
 
   deleteNote(id: number): boolean {
     // 🔴🟢 EJERCICIO 5: ciclo completo.
-    throw new Error('deleteNote: no implementado (Ejercicio 5)');
+    return this.repo.delete(id);
   }
 
 }
