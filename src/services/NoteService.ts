@@ -12,6 +12,7 @@ export interface NoteService {
   deleteNote(id: number): boolean;
 }
 
+// 🟢 EJERCICIO 1:
 export class NoteServiceImpl implements NoteService {
   constructor(private readonly repo: NoteRepository) {}
 
@@ -27,8 +28,6 @@ export class NoteServiceImpl implements NoteService {
 
   listNotes(): Note[] {
     // 🟢 EJERCICIO 2: esta función YA FUNCIONA.
-    // No existe todavía el archivo tests/unit/noteService.list.test.ts:
-    // escríbanlo ustedes cubriendo al menos "lista vacía" y "varias notas".
     return this.repo.findAll();
   }
 
@@ -38,8 +37,8 @@ export class NoteServiceImpl implements NoteService {
   }
 
   updateNote(id: number, patch: NotePatch): Note | undefined {
-    // 🔴🟢 EJERCICIO 4: ciclo completo. Es una actualización PARCIAL:
-    // si patch solo trae `title`, `content` no debe cambiar (y viceversa).
+    // 🔴🟢 EJERCICIO 4: ciclo completo.
+    // Es una actualización PARCIAL.
     throw new Error('updateNote: no implementado (Ejercicio 4)');
   }
 
