@@ -9,21 +9,38 @@ export interface NoteService {
   listNotes(): Note[];
   getNote(id: number): Note | undefined;
   updateNote(id: number, patch: NotePatch): Note | undefined;
-  deleteNote(id: number): boolean;
-}
+  deleteNote(id: number): boolean 
+  }
+
 
 // 🟢 EJERCICIO 1:
 export class NoteServiceImpl implements NoteService {
   constructor(private readonly repo: NoteRepository) {}
 
   createNote(data: NewNote): Note {
+    // 🔴 EJERCICIO 1 (dado en rojo en tests/unit/noteService.create.test.ts)
+    // Implementen la creación básica: crear la nota en el repositorio y
+    // devolverla. Con esto alcanza para que el test de la cátedra pase.
+    //
     const note = this.repo.create(data);
-
     if (data.pinned) {
       notify(note);
     }
-
     return note;
+    
+    
+    // 🔴🟢 EJERCICIO 6 (a hacer más adelante, ustedes escriben el test):
+    // una vez que este método esté en verde, agréguenle: si `data.pinned`
+    // es true, además deben llamar a notify(nota) del módulo
+    // notificationService. En el test, simulen ese módulo completo con
+    // vi.mock y verifiquen la llamada con toHaveBeenCalledWith.
+    const created = this.repo.create(data);
+
+    if (data.pinned) {
+      notify(created);
+    }
+
+    return created;
   }
 
   listNotes(): Note[] {
@@ -33,17 +50,20 @@ export class NoteServiceImpl implements NoteService {
 
   getNote(id: number): Note | undefined {
     // 🔴🟢 EJERCICIO 3: ciclo completo (test + implementación).
-    throw new Error('getNote: no implementado (Ejercicio 3)');
-  }
+      return this.repo.findById(id);
+}
+    
 
   updateNote(id: number, patch: NotePatch): Note | undefined {
-    // 🔴🟢 EJERCICIO 4: ciclo completo.
-    // Es una actualización PARCIAL.
-    throw new Error('updateNote: no implementado (Ejercicio 4)');
-  }
+    // 🔴🟢 EJERCICIO 4: ciclo completo. Es una actualización PARCIAL:
+    // si patch solo trae `title`, `content` no debe cambiar (y viceversa).
+   return this.repo.update(id, patch);
+}
 
   deleteNote(id: number): boolean {
     // 🔴🟢 EJERCICIO 5: ciclo completo.
-    throw new Error('deleteNote: no implementado (Ejercicio 5)');
+    return this.repo.delete(id);
   }
+
 }
+

@@ -1,7 +1,11 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NoteServiceImpl } from '../../src/services/NoteService';
-import { SqliteNoteRepository } from '../../src/repositories/NoteRepository';
 import { createDb } from '../../src/db/connection';
+import {
+  SqliteNoteRepository,
+  NoteRepository,
+} from '../../src/repositories/NoteRepository';
+import { notify } from '../../src/services/notificationService';
 
 // 🔴 EJERCICIO 1 — Este archivo YA ESTÁ ESCRITO y el test está en ROJO
 // porque NoteService.createNote todavía no está implementado.
@@ -9,6 +13,9 @@ import { createDb } from '../../src/db/connection';
 // Consigna: NO modifiquen este archivo. Vayan a
 // src/services/NoteService.ts e implementen createNote hasta que estos
 // 3 tests pasen (Verde). Después, refactoricen si hace falta.
+
+// Mockeamos todo el módulo: notify pasa a ser un vi.fn() automáticamente
+vi.mock('../../src/services/notificationService');
 
 describe('NoteService - createNote (Ejercicio 1)', () => {
   let service: NoteServiceImpl;
